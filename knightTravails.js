@@ -20,14 +20,10 @@ function minStepAlg(knightPos, targetPos){
     let dy = [-1, -2, -2, -1,  1,  2, 2, 1];
 
     let queue = [];
-    let allVisits = [];
+    queue.push(new cell(knightPos[0], knightPos[1], []));
 
-    //push starting position of knight with 0 distance
-    queue.push(new cell(knightPos[0], knightPos[1], 0));
-
-    let trf, x, y;
-    //let visit = new Array(n + 1);
     let visit = new Set();
+    let n=8; 
 
     // make all cell unvisited
     for (let i=0; i < 8; i++){
@@ -42,12 +38,15 @@ function minStepAlg(knightPos, targetPos){
 
     // loop until we have one element in queue
     while(queue.length != 0){
-        trf = queue.shift();
-        allVisits.push([trf.x, trf.y]);
+        let trf = queue.shift();
 
         // if current cell is equal to target cell, return its distance
-        if(trf.x == targetPos[0] && trf.y == targetPos[1]){
-            console.log(allVisits);
+        if(trf.x === targetPos[0] && trf.y === targetPos[1]){
+            trf.dist = [...trf.dist, [trf.x, trf.y]];
+            console.log(`You made it in ${trf.dist.length - 1} moves! Here's your path:`);
+            for (let path of trf.dist) {
+                console.log(path);
+            }
             return trf.dist;
         }
 
@@ -61,7 +60,7 @@ function minStepAlg(knightPos, targetPos){
             if(insideBoard(x, y) && !visit[x][y]){
                 visit[x][y] = true;
                 
-                queue.push(new cell(x,y, trf.dist + 1));
+                queue.push(new cell(x,y, [...trf.dist, [trf.x, trf.y] ]));
             }
 
         }
@@ -70,7 +69,9 @@ function minStepAlg(knightPos, targetPos){
 
 }
 
-let n=30; 
+
 let knightPos = [0,0];
 let targetPos = [3, 3];
 console.log(minStepAlg(knightPos, targetPos));
+
+console.log(minStepAlg([3,3], [4,3]));
