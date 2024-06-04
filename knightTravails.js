@@ -7,30 +7,32 @@ class cell{
     }
 }
 
-function insideBoard(x,y, n){
+function insideBoard(x,y, N=8){
 
-    if(x >= 1 && x <= n && y >=1 && y <= n) return true;
+    if(x >= 0 && x < 8 && y >=0 && y < 8) return true;
     return false;
 }
 
-function minStepAlg(knightPos, targetPos, n){
+function minStepAlg(knightPos, targetPos){
 
     // directions where a knight can move
-    let dx = [-2, -1, 1, 2, -2, -1, 1, 2];
-    let dy = [-1, -2, -2, -1, 1, 2, 2, 1];
+    let dx = [-2, -1,  1,  2, -2, -1, 1, 2];
+    let dy = [-1, -2, -2, -1,  1,  2, 2, 1];
 
     let queue = [];
+    let allVisits = [];
 
     //push starting position of knight with 0 distance
     queue.push(new cell(knightPos[0], knightPos[1], 0));
 
     let trf, x, y;
-    let visit = new Array(n + 1);
+    //let visit = new Array(n + 1);
+    let visit = new Set();
 
     // make all cell unvisited
-    for (let i=1; i <= n; i++){
+    for (let i=0; i < 8; i++){
         visit[i] = new Array(n+1);
-        for (let j=1; j <= n; j++){
+        for (let j=0; j < 8; j++){
             visit[i][j] = false;
         }
     }
@@ -41,21 +43,24 @@ function minStepAlg(knightPos, targetPos, n){
     // loop until we have one element in queue
     while(queue.length != 0){
         trf = queue.shift();
+        allVisits.push([trf.x, trf.y]);
 
         // if current cell is equal to target cell, return its distance
         if(trf.x == targetPos[0] && trf.y == targetPos[1]){
+            console.log(allVisits);
             return trf.dist;
         }
 
         // loop for all reachable states
-        for(let i=0; i < 8; i++){
+        for(let i=0; i <= 8; i++){
             x = trf.x + dx[i];
             y = trf.y + dy[i];
 
             // If reachable state is not yet visited and inside board, push 
             // that state into queue.
-            if(insideBoard(x, y, n) && !visit[x][y]){
+            if(insideBoard(x, y) && !visit[x][y]){
                 visit[x][y] = true;
+                
                 queue.push(new cell(x,y, trf.dist + 1));
             }
 
@@ -66,6 +71,6 @@ function minStepAlg(knightPos, targetPos, n){
 }
 
 let n=30; 
-let knightPos = [1,1];
-let targetPos = [30, 30];
-console.log(minStepAlg(knightPos, targetPos, n));
+let knightPos = [0,0];
+let targetPos = [3, 3];
+console.log(minStepAlg(knightPos, targetPos));
