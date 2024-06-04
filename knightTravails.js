@@ -73,5 +73,15 @@ function minStepAlg(knightPos, targetPos){
 let knightPos = [0,0];
 let targetPos = [3, 3];
 console.log(minStepAlg(knightPos, targetPos));
+// You made it in 2 moves! Here's your path:
+// [ 0, 0 ]
+// [ 1, 2 ]
+// [ 3, 3 ]
+
 
 console.log(minStepAlg([3,3], [4,3]));
+// You made it in 3 moves! Here's your path:
+// [ 3, 3 ]
+// [ 1, 2 ]
+// [ 3, 1 ]
+// [ 4, 3 ]
